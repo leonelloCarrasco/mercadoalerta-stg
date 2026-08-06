@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/clean-url.js"></script>
+<title>Simular pago (solo desarrollo) — MercadoAlerta</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12172B" id="theme-meta"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+<div class="card" style="max-width: 480px;">
+  <div class="logo"><span class="logo-seal"></span>MercadoAlerta</div>
+  <p class="sub">⚠️ Esta pantalla solo existe porque no hay credenciales reales de MercadoPago configuradas — en producción, acá es donde MercadoPago mostraría el formulario real de tarjeta.</p>
+
+  <p style="font-size: 14px; margin-bottom: 12px;">Referencia: <code id="referencia" style="color: var(--gold);"></code></p>
+
+  <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+    Para simular que el pago se aprobó, corre esto en PowerShell (reemplaza el ID de empresa y tu API key de admin):
+  </p>
+
+  <pre style="background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-size: 12px; overflow-x: auto; color: var(--text);" id="comando"></pre>
+
+  <div class="footer-link">
+    <a href="login.html">← Volver a inicio de sesión</a>
+  </div>
+</div>
+
+<script>
+  const referencia = new URLSearchParams(window.location.search).get('referencia') || 'desconocida';
+  document.getElementById('referencia').textContent = referencia;
+
+  // referencia tiene la forma "empresa-123"
+  const empresaId = referencia.split('-')[1] || 'ID_EMPRESA';
+
+  document.getElementById('comando').textContent =
+`Invoke-RestMethod -Uri "http://localhost:3000/api/pagos/simular/${empresaId}" \`
+  -Method Post -Headers @{ "x-admin-key" = "TU_ADMIN_API_KEY" }`;
+</script>
+
+</body>
+</html>

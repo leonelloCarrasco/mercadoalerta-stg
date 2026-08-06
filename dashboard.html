@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/clean-url.js"></script>
+<title>Dashboard — MercadoAlerta</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12172B" id="theme-meta">
+<script>
+  // Aplica el tema guardado ANTES de que cargue el CSS, para que no haya un
+  // parpadeo del tema oscuro (default) antes de aplicar el claro — ver
+  // aplicarTema() en dashboard.js, que es la misma lógica pero llamada
+  // desde el botón de Mi Perfil en vez de acá al cargar.
+  (function () {
+    var tema = localStorage.getItem('tema');
+    if (tema === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="icon" type="image/svg+xml" href="/assets/mercadoalerta-icon.svg">
+
+
+</head>
+<body>
+
+<div class="wrap">
+  <aside class="sidebar">
+    <div class="logo"><img src="/assets/mercadoalerta-icon.svg" class="logo-seal"/>MercadoAlerta</div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <div class="stat-tile-label">Panel de Control</div>
+      <button type="button" class="sidebar-link active" data-section="inicio"><div class="icon"><img src="/assets/icons/hogar.svg" class="icon-desc"></img></div> Inicio</button>
+      <button type="button" class="sidebar-link" data-section="alertas"><div class="icon"><img src="/assets/icons/sonido-de-timbre.svg" class="icon-desc"></img></div> Alertas</button>
+      <button type="button" class="sidebar-link" data-section="notificaciones"><div class="icon"><img src="/assets/icons/mensajes.svg" class="icon-desc"></img></div> Notificaciones</button>
+      <button type="button" class="sidebar-link" data-section="busquedas"><div class="icon"><img src="/assets/icons/busqueda.svg" class="icon-desc"></img></div> Búsquedas</button>
+      <button type="button" class="sidebar-link" data-section="oportunidades"><div class="icon"><img src="/assets/icons/dolar-bombilla.svg" class="icon-desc"></img></div> Oportunidades</button>
+      <button type="button" class="sidebar-link" data-section="analisis"><div class="icon"><img src="/assets/icons/grafico-dolar-circulo-mezclado.svg" class="icon-desc"></img></div> Análisis de Precios</button>
+      <button type="button" class="sidebar-link" data-section="ia"><div class="icon"><img src="/assets/icons/inteligencia-artificial.svg" class="icon-desc"></img></div> Análisis de Procesos</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button type="button" class="sidebar-user-trigger" id="sidebarMenuBtn">
+        <div class="topbar-avatar" id="sidebarAvatarBtn">👤</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebarMenuName">Cargando...</div>
+          <div class="sidebar-user-email" id="sidebarMenuEmail"></div>
+        </div>
+      </button>
+      <div class="sidebar-menu" id="sidebarMenu">
+        <button type="button" class="sidebar-link" data-section="cuenta"><div class="icon"><img src="/assets/icons/ajustes.svg" class="icon-desc"></img></div> Configuración</button>
+        <button type="button" class="sidebar-link" data-section="ayuda"><div class="icon"><img src="/assets/icons/interrogatorio.svg" class="icon-desc"></img></div> Ayuda</button>
+        <button type="button" class="sidebar-link logout-btn"><div class="icon"><img src="/assets/icons/salida.svg" class="icon-desc"></img></div> Cerrar sesión</button>
+      </div>
+    </div>
+  </aside>
+
+  <header class="topbar-mobile">
+    <div class="logo"><img src="/assets/mercadoalerta-icon.svg" class="logo-seal"/>MercadoAlerta</div>
+    <button type="button" class="topbar-avatar" id="topbarMenuBtn">👤</button>
+    <div class="topbar-menu" id="topbarMenu">
+      <div class="topbar-menu-identity">
+        <div class="topbar-menu-name" id="topbarMenuName">Cargando...</div>
+        <div class="topbar-menu-email" id="topbarMenuEmail"></div>
+      </div>
+      <button type="button" class="topbar-menu-item" data-section="cuenta"><div class="icon-2"><img src="/assets/icons/ajustes.svg" class="icon-desc"></img></div> Configuración</button>
+      <button type="button" class="topbar-menu-item" data-section="ayuda"><div class="icon-2"><img src="/assets/icons/interrogatorio.svg" class="icon-desc"></img></div> Ayuda</button>
+      <button type="button" class="topbar-menu-item logout-btn"><div class="icon-2"><img src="/assets/icons/salida.svg" class="icon-desc"></img></div> Cerrar sesión</button>
+    </div>
+  </header>
+
+  <nav class="bottombar-mobile">
+    <button type="button" class="bottombar-link active" data-section="inicio"><div class="icon"><img src="/assets/icons/hogar.svg" class="icon-desc"></img></div>Inicio</button>
+    <button type="button" class="bottombar-link" data-section="alertas"><div class="icon"><img src="/assets/icons/sonido-de-timbre.svg" class="icon-desc"></img></div>Alertas</button>
+    <button type="button" class="bottombar-link" data-section="notificaciones"><div class="icon"><img src="/assets/icons/mensajes.svg" class="icon-desc"></img></div>Notificaciones</button>
+    <button type="button" class="bottombar-link" data-section="busquedas"><div class="icon"><img src="/assets/icons/busqueda.svg" class="icon-desc"></img></div>Búsquedas</button>
+    <button type="button" class="bottombar-link" id="bottombarMasBtn"><span class="bottombar-link-icon">⋯</span>Más</button>
+    <div class="topbar-menu bottombar-mas-menu" id="bottombarMasMenu">
+      <button type="button" class="topbar-menu-item" data-section="oportunidades"><div class="icon"><img src="/assets/icons/dolar-bombilla.svg" class="icon-desc"></img></div> Oportunidades</button>
+      <button type="button" class="topbar-menu-item" data-section="analisis"><div class="icon"><img src="/assets/icons/grafico-dolar-circulo-mezclado.svg" class="icon-desc"></img></div> Análisis de Precios</button>
+      <button type="button" class="topbar-menu-item" data-section="ia"><div class="icon"><img src="/assets/icons/inteligencia-artificial.svg" class="icon-desc"></img></div> Análisis de Procesos</button>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="error-banner" id="errorBanner"></div>
+    <div class="plan-banner" id="planBanner" style="display:none;"></div>
+
+    <!-- Sección: Inicio -->
+    <div class="tab-content active" id="secInicio">
+      <section>
+        <div class="section-head">
+          <div class="icon"><img src="/assets/icons/hogar.svg" class="icon-desc"></img></div>
+          <h2>Inicio</h2>
+        </div>
+
+        <p class="section-sub" style="margin-bottom: 20px;">Revisa el resumen de tu actividad en MercadoAlerta.</p>
+
+        <div class="card" id="inicioOnboardingBanner" style="display:none; padding: 24px; margin-bottom: 28px; border-color: var(--gold);">
+          <h3 style="font-size: 16px; margin-bottom: 6px;">👋 Todavía no tienes ninguna alerta configurada</h3>
+          <p class="section-sub" style="margin-bottom: 16px;">Crea tu primera alerta para que MercadoAlerta empiece a avisarte apenas se publique algo de tu rubro en Mercado Público.</p>
+          <button type="button" class="btn" id="inicioOnboardingCrearAlertaBtn">+ Crear mi primera alerta</button>
+        </div>
+
+        <div class="section-head" style="margin-top: 32px;">
+          <h3>Resumen de Alertas</h3>
+        </div>
+        <div class="stat-tiles" id="inicioStats">
+          <div class="stat-tile">
+            <div class="stat-tile-head">
+              <div class="icon-stat"><img src="/assets/icons/campana.svg" class="icon-stat-desc"></img></div>
+              <div class="stat-tile-label">Alertas activas</div>
+            </div>
+            <div class="stat-tile-value" id="statAlertasActivas" style="color: #3ECF8E;">—</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-head">
+              <div class="icon-stat" style="background-color: #edeef5;"><img src="/assets/icons/corte-de-campana.svg" class="icon-stat-desc" ></img></div>
+              <div class="stat-tile-label">Alertas pausadas</div>
+            </div>
+            <div class="stat-tile-value muted" id="statAlertasPausadas">—</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-head">
+              <div class="icon-stat" style="background-color: #D4A72C;"><img src="/assets/icons/sobre.svg" class="icon-stat-desc" ></img></div>
+              <div class="stat-tile-label">Notificaciones</div>
+            </div>
+            <div class="stat-tile-value" id="statNotifTotal">—</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-head">
+              <div class="icon-stat" style="background-color: #D4A72C;"><img src="/assets/icons/sobre-a-granel.svg" class="icon-stat-desc" ></img></div>
+              <div class="stat-tile-label">Recibidos Última semana</div>
+            </div>
+            <div class="stat-tile-value" id="statNotif7d">—</div>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-top: 32px;">
+          <h3>Resumen de Notificaciones</h3>
+        </div>
+        <div class="card" id="inicioReporteCard">
+          <div class="loading">Cargando...</div>
+        </div>
+
+        <div class="section-head" style="margin-top: 32px;">
+          <h3>Recordatorios, seguimientos y portafolio</h3>
+        </div>
+        <div class="card" id="inicioOportunidadesCard">
+          <div class="loading">Cargando...</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sección: Alertas -->
+    <div class="tab-content" id="tabAlertas">
+      <section>
+        <div class="section-head">
+          <div class="icon"><img src="/assets/icons/sonido-de-timbre.svg" class="icon-desc"></img></div>
+          <h2>Alertas Configuradas</h2>
+        </div>
+
+        <div class="section-head">
+          <p class="section-sub" style="margin-bottom: 20px;">Administra tus alertas y configura notificaciones personalizadas.</p>
+          <button type="button" class="btn" id="abrirNuevaAlertaBtn">+ Crear Alerta</button>
+        </div>
+
+        <div class="error-banner" id="errorBannerAlertas"></div>
+
+        <details class="filter-toggle">
+          <summary>Filtros</summary>
+          <div class="filter-bar filter-bar-oneline">
+            <div class="field">
+              <label for="filtroEstado">Estado</label>
+              <select id="filtroEstado">
+                <option value="">Todos</option>
+                <option value="true">Activa</option>
+                <option value="false">Pausada</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="filtroTipoProcesoConfig">Tipo proceso</label>
+              <select id="filtroTipoProcesoConfig">
+                <option value="">Todos</option>
+                <option value="licitacion">Licitación</option>
+                <option value="compra_agil">Compra Ágil</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="filtroRegionConfig">Región</label>
+              <select id="filtroRegionConfig"></select>
+            </div>
+            <div class="field" style="position: relative;">
+              <label for="filtroCategoriaConfig">Rubro o Producto</label>
+              <input type="text" id="filtroCategoriaConfig" placeholder="Busca por nombre o código" autocomplete="off">
+              <div id="filtroCategoriaConfigResultados" class="categoria-resultados"></div>
+            </div>
+            
+          </div>
+          <br>
+          <div class="field field-btn">
+              <button type="button" class="btn btn-ghost" id="limpiarFiltroConfigBtn">✖ Limpiar</button>
+            </div>
+        </details>
+        <div class="card" id="configsCard">
+          <div class="loading">Cargando...</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sección: Búsquedas -->
+    <div class="tab-content" id="secBusquedas">
+      <section>
+        <div class="section-head">
+          <div class="icon"><img src="/assets/icons/busqueda.svg" class="icon-desc"></img></div>
+          <h2>Búsquedas</h2>
+        </div>
+
+        <div class="section-head">
+          <p class="section-sub" style="margin-bottom: 20px;">Guarda combinaciones de filtros que uses seguido y vuelve a ejecutarlas con un clic, sin tener que armarlas de nuevo cada vez.</p>
+          <div class="section-head" id="head-new-search">
+            <h3 id="busquedaTitulo">Búsquedas Guardadas</h3>
+            <button type="button" class="btn" id="abrirNuevaBusquedaBtn">+ Crear Búsqueda</button>
+          </div>
+        </div>
+
+        <div class="error-banner" id="errorBannerBusquedas"></div>
+
+        <div class="card" id="busquedasCard">
+          <div class="loading">Cargando...</div>
+        </div>
+
+        <div id="busquedaResultadosWrap" style="display:none; margin-top: 28px;">
+          <div class="section-head" id="head-result-search">
+            <h3 id="busquedaResultadosTitulo">Resultados</h3>
+            <button type="button" class="btn btn-ghost" id="descargarPdfBtn">📄 Descargar PDF</button>
+          </div>
+          <div class="error-banner" id="errorBannerBusquedasOp"></div>
+
+          <div class="card" id="busquedaResultadosCard"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sección: Notificaciones -->
+    <div class="tab-content" id="tabNotificaciones">
+      <section>
+        <div class="section-head">
+          <div class="icon"><img src="/assets/icons/mensajes.svg" class="icon-desc"></img></div>
+          <h2>Notificaciones</h2>
+          <button type="button" class="btn btn-ghost section-head-action" id="refrescarHistorialBtn">↻ Actualizar</button>
+        </div>
+
+        <div class="section-head">
+          <p class="section-sub" style="margin-bottom: 20px;">Visualiza las notificaciones recibidas.</p>
+        </div>
+
+        <div class="error-banner" id="errorBannerNotificaciones"></div>
+
+        <details class="filter-toggle">
+          <summary>Filtros</summary>
+          <div class="filter-bar filter-bar-oneline">
+            <div class="field">
+              <label for="filtroTipoHist">Tipo proceso</label>
+              <select id="filtroTipoHist">
+                <option value="">Todos</option>
+                <option value="licitacion">Licitación</option>
+                <option value="compra_agil">Compra Ágil</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="filtroRegionHist">Región</label>
+              <select id="filtroRegionHist"></select>
+            </div>
+            <div class="field" style="position: relative;">
+              <label for="filtroCategoriaHist">Rubro o Producto</label>
+              <input type="text" id="filtroCategoriaHist" placeholder="Busca por nombre o código" autocomplete="off">
+              <div id="filtroCategoriaHistResultados" class="categoria-resultados"></div>
+            </div>
+            <div class="field">
+              <label for="filtroFechaHist">Fecha de cierre</label>
+              <input type="date" id="filtroFechaHist">
+            </div>
+            <div class="field">
+              <label for="filtroFechaEnvioHist">Fecha de envío</label>
+              <input type="date" id="filtroFechaEnvioHist">
+            </div>
+           
+          </div>
+          <br>
+           <div class="field field-btn">
+              <button type="button" class="btn btn-ghost" id="limpiarFiltroHistBtn">✖ Limpiar</button>
+            </div>
+        </details>
+        <div class="card" id="historyCard">
+          <div class="loading">Cargando...</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sección: Oportunidades -->
+    <div class="tab-content" id="tabOportunidades">
+      <section>
+        <div class="section-head">
+          <div class="icon"><img src="/assets/icons/dolar-bombilla.svg" class="icon-desc"></img></div>
+          <h2>Oportunidades</h2>
+        </div>
+
+        <div class="section-head">
+          <p class="section-sub" style="margin-bottom: 16px;">Licitaciones y Compras Ágiles que marcaste desde Notificaciones o Búsquedas para recordatorio de cierre, seguimiento de cambio de estado, o gestión en tu portafolio de proyectos.</p>
+        </div>
+
+        <div class="tabs" id="oportunidadesSubTabs" style="margin-bottom: 16px;">
+          <button type="button" class="tab-btn active" data-subtab="recordatorios">⏰ Recordatorios de Cierre</button>
+          <button type="button" class="tab-btn" data-subtab="seguimiento">➕ Seguimiento de Estado</button>
+          <button type="button" class="tab-btn" data-subtab="pipeline">🗂️ Portafolio</button>
+        </div>
+        <div class="field">
+          <select id="oportunidadesSubTabSelect" class="tipo-proceso-select" style="margin-bottom: 16px;">
+            <option value="recordatorios">⏰ Recordatorios de Cierre</option>
+            <option value="seguimiento">➕ Seguimiento de Estado</option>
+            <option value="pipeline">🗂️ Portafolio</option>
+          </select>
+        </div>
+
+        <div class="error-banner" id="errorBannerOportunidades"></div>
+
+        <div class="card" id="oportunidadesCard">
+          <div class="loading">Cargando...</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sección: Análisis de precios (plan Full — temporalmente visible en Trial para pruebas) -->
+    <div class="tab-content" id="tabAnalisis">
+      <section>
+        <div class="section-head">
+          <div class="icon"><img src="/assets/icons/grafico-dolar-circulo-mezclado.svg" class="icon-desc"></img></div>
+          <h2>Análisis de Precios</h2>
+        </div>
+
+        <div class="section-head">
+          <p class="section-sub" style="margin-bottom: 16px;">Busca un producto o rubro para ver el historial de precios de adjudicación — útil para calibrar a qué precio postular en un nuevo llamado. 
+            Además puedes visualizar los proveedores y organismos asociados a procesos donde el producto o rubro buscado ha sido adjudicado.</p>
+        </div>
+
+        <div class="field" style="max-width: 480px; position: relative; margin-bottom: 20px;">
+          <label for="analisisBuscar">Producto o Rubro</label>
+          <input type="text" id="analisisBuscar" placeholder="Busca por nombre o código (ej. antibióticos, 51101500)" autocomplete="off">
+          <div id="analisisResultados" class="categoria-resultados"></div>
+        </div>
+
+        <div class="tabs" id="analisisSubTabs" style="margin-bottom: 16px;">
+          <button type="button" class="tab-btn active" data-subtab="precios">💰 Precios</button>
+          <button type="button" class="tab-btn" data-subtab="proveedores">🏆 Proveedores</button>
+          <button type="button" class="tab-btn" data-subtab="organismos">🏛️ Organismos</button>
+          <button type="button" class="tab-btn" data-subtab="rechazos">❌ Razones de rechazo</button>
+        </div>
+
+        <div class="card" id="analisisCard">
+          <div class="empty-state">Busca un producto o rubro arriba para ver su historial de precios de adjudicación.</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sección: Análisis de Procesos (IA) -->
+    <div class="tab-content" id="secIA">
+      <section>
+        <div class="section-head">
+          <div class="icon"><img src="/assets/icons/inteligencia-artificial.svg" class="icon-desc"></img></div>
+          <h2>Análisis de Procesos</h2>
+        </div>
+        <p class="section-sub" style="margin-bottom: 8px;">
+          Ingresa el código de una Licitación o Compra Ágil para recibir un resumen en lenguaje simple
+          y un checklist de los documentos que exige — apoyo para decidir y prepararte, no reemplaza tu propio criterio.
+        </p>
+        <br>
+        <div class="card" style="display: block; padding: 10px; margin-bottom: 20px; border-color: var(--gold);"">
+          <div class="section-head" style="padding: 0px; margin-bottom: 0px; border-color: var(--gold);""> 
+            <div class="icon" style="background-color: var(--gold);">
+              <img src="/assets/icons/informacion.svg" class="icon-desc-info" style="background-color:  var(--gold)"></img>
+            </div>
+            <p class="section-sub" id="analisisCupoInfo" style="margin-bottom: 0px;color: var(--gold);"> </p>
+          </div>
+        </div>
+
+        
+
+        <div class="card" style="padding: 24px; margin-bottom: 20px;" id="analisisMisAnalisisCard">
+          <div class="section-head">
+            <h3 style="font-size: 15px;">Mis Análisis</h3>
+          </div>
+          <div id="analisisMisAnalisisLista"><div class="loading">Cargando...</div></div>
+        </div>
+
+        <div class="card" style="padding: 24px; margin-bottom: 20px;">
+          <div class="form-grid">
+            <div class="field">
+              <label for="analisisCodigo"><strong>Código del proceso</strong></label>
+              <input type="text" id="analisisCodigo" placeholder="Ej: 1509-5-L114 o 1195-39-COT26">
+            </div>
+            <div class="field">
+              <label><strong>Tipo</strong></label>
+              <div class="tipo-proceso-row-analisis">
+                <label class="checkbox-row" style="margin:0;"><input type="radio" name="analisisTipo" value="licitacion" checked> Licitación</label>
+                <label class="checkbox-row" style="margin:0;"><input type="radio" name="analisisTipo" value="compra_agil"> Compra Ágil</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-actions" style="justify-content: flex-start; margin-top: 16px;">
+            <button type="button" class="btn" id="analisisBuscarBtn">🔍 Buscar / Analizar</button>
+          </div>
+          <div class="error-banner" id="errorAnalisis" style="display:none; margin-top: 12px;"></div>
+        </div>
+
+        <!-- Se muestra cuando no hay análisis cacheado: pedir archivo o "sin adjuntos" -->
+        <div class="card" id="analisisUploadCard" style="display:none; padding: 24px; margin-bottom: 20px;">
+          <h3 style="margin-bottom: 8px; font-size: 15px;">Aún no hay un análisis para este proceso</h3>
+          <p class="section-sub" style="margin-bottom: 16px; font-size: 13px;">
+            Sube el PDF o Word de las bases (descárgalo desde
+            <a href="#" id="analisisLinkFicha" target="_blank" rel="noopener noreferrer">la ficha en Mercado Público</a>,
+            botón "Adjuntos") — sin las bases completas, el análisis va a estar incompleto.
+          </p>
+          <div class="field">
+            <input type="file" id="analisisArchivo" accept=".pdf,.docx">
+          </div>
+          <label class="checkbox-row" style="margin-top: 10px;">
+            <input type="checkbox" id="analisisSinAdjuntos"> No tengo o no existen archivos — analizar solo con la ficha pública
+          </label>
+          <div class="modal-actions" style="justify-content: flex-start; margin-top: 16px;">
+            <button type="button" class="btn" id="analisisEjecutarBtn">✨ Analizar con IA</button>
+          </div>
+        </div>
+
+        <!-- Resultado -->
+        <div class="card" id="analisisResultadoWrap" style="display:none; padding: 24px;">
+          <div id="analisisAvisoDesactualizado" class="warning-box-inline" style="display:none;"></div>
+          <div class="section-head">
+            <h3 id="analisisResultadoTitulo">Resultado</h3>
+            <div style="display:flex; gap:8px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-ghost" id="analisisDescargarPdfBtn">📄 Descargar PDF</button>
+              <button type="button" class="btn btn-ghost" id="analisisEnviarCorreoBtn">✉️ Enviar por correo</button>
+              <button type="button" class="btn btn-ghost" id="analisisRehacerBtn">🔄 Rehacer análisis</button>
+            </div>
+          </div>
+          <div id="analisisContenido"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Modal: confirmar cuando el documento no parece corresponder -->
+    <div class="modal-overlay" id="analisisMismatchModal">
+      <div class="modal">
+        <h3>⚠️ El documento no parece corresponder</h3>
+        <p class="modal-message" id="analisisMismatchRazon"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn" id="analisisMismatchCancelar">Cancelar</button>
+          <button type="button" class="btn btn-ghost" id="analisisMismatchContinuar">Continuar de todas formas</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: enviar por correo -->
+    <div class="modal-overlay" id="analisisCorreoModal">
+      <div class="modal">
+        <h3>Enviar análisis por correo</h3>
+        <br>
+        <div class="field">
+          <label for="analisisCorreoInput">Correo de destino</label>
+          <input type="email" id="analisisCorreoInput">
+        </div>
+        <div class="error-banner" id="errorAnalisisCorreo" style="display:none;"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="analisisCorreoCancelar">Cancelar</button>
+          <button type="button" class="btn" id="analisisCorreoConfirmar">Enviar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Configuración -->
+    <div class="tab-content" id="secCuenta">
+      <section>
+        <div class="section-head">
+          <div class="icon"><img src="/assets/icons/ajustes.svg" class="icon-desc"></img></div>
+          <h2>Configuración</h2>
+        </div>
+
+        <div class="section-head">
+          <p class="section-sub" style="margin-bottom: 16px;">Gestiona tu perfil de cuenta, seguridad y preferencias.</p>
+        </div>
+
+        <div class="card" style="padding: 0; max-width: 640px; margin: 0 auto; overflow: hidden;">
+          <details class="perfil-acordeon" open>
+            <summary>Perfil</summary>
+            <div class="perfil-acordeon-contenido">
+              <p class="section-sub" style="margin-bottom: 14px;">Gestiona tu información personal.</p>
+              <div class="mensajeria-canal" style="margin-bottom: 0;">
+                <label for="profileNombre" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Avatar</label>
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                  <div id="avatarPreview" class="avatar-preview">👤</div>
+                  <div>
+                    <input type="file" id="avatarInput" accept="image/jpeg,image/png,image/webp" style="display:none;">
+                    <div style="display: flex; gap: 8px;">
+                      <button type="button" class="btn btn-ghost" id="avatarSubirBtn">Subir foto</button>
+                      <button type="button" class="btn btn-ghost" id="avatarQuitarBtn" style="display:none;">Quitar foto</button>
+                    </div>
+                    <p class="form-note" id="avatarMsg" style="display:none; margin-top: 8px;"></p>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                  <form id="profileForm">
+                    <div class="profile-field-row">
+                      <div>
+                        <label for="profileNombre" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Nombre</label>
+                        <input type="text" id="profileNombre" style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 6px;">
+                      </div>
+                      <div>
+                        <label for="profileApellido" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Apellido</label>
+                        <input type="text" id="profileApellido" style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 6px;">
+                      </div>
+                    </div>
+
+                    <div class="profile-field-row">
+                      <div>
+                        <label for="profileTelefono" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Teléfono</label>
+                        <input type="tel" id="profileTelefono" placeholder="+56 9 1234 5678" style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 6px;">
+                      </div>
+                      <div>
+                        <label for="profileEmail" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Email</label>
+                        <input type="email" id="profileEmail" disabled style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); padding: 10px 12px; border-radius: 6px; cursor: not-allowed;">
+                        <small style="display:block; margin-top: 4px; color: var(--text-muted); font-size: 11px;">No editable — escríbenos si necesitas cambiarlo.</small>
+                      </div>
+                    </div>
+
+                    <div class="profile-field-row">
+                      <div>
+                        <label for="profileNombreEmpresa" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Nombre empresa</label>
+                        <input type="text" id="profileNombreEmpresa" disabled style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); padding: 10px 12px; border-radius: 6px; cursor: not-allowed;">
+                      </div>
+                      <div>
+                        <label for="profileRutEmpresa" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">RUT empresa</label>
+                        <input type="text" id="profileRutEmpresa" disabled style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); padding: 10px 12px; border-radius: 6px; cursor: not-allowed;">
+                      </div>
+                    </div>
+
+                    <div class="form-note" id="profileInfoMsg" style="display:none; margin-bottom: 12px;"></div>
+                    <div class="modal-actions" style="justify-content: flex-start;">
+                      <button type="submit" class="btn">Guardar Cambios</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="perfil-acordeon" id="aparienciaCard">
+            <summary>Apariencia</summary>
+            <div class="perfil-acordeon-contenido">
+              <p class="section-sub" style="margin-bottom: 14px;">Elige cómo se ve tu panel.</p>
+              <div class="mensajeria-canal" style="margin-bottom: 0;">
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                  <button type="button" class="btn btn-ghost tema-btn" id="temaOscuroBtn" data-tema="dark">🌙 Oscuro</button>
+                  <button type="button" class="btn btn-ghost tema-btn" id="temaClaroBtn" data-tema="light">☀️ Claro</button>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="perfil-acordeon">
+            <summary>Seguridad</summary>
+            <div class="perfil-acordeon-contenido">
+              <p class="section-sub" style="margin-bottom: 14px;">Modifica tu contraseña.</p>
+              <div class="mensajeria-canal" style="margin-bottom: 0;">
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                  <form id="passwordForm">
+                    <label for="passwordActual" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Contraseña  Actual</label>
+                    <input type="password" id="passwordActual" style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 6px; margin-bottom: 14px;">
+
+                    <label for="passwordNueva" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Contraseña nueva (mín. 8 caracteres)</label>
+                    <div class="password-field" style="margin-bottom: 14px;">
+                      <input type="password" id="passwordNueva" style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 6px;">
+                      <button type="button" id="togglePasswordNueva" class="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false" data-target="passwordNueva">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye-off" aria-hidden="true" style="display:none;"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"></path><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"></path><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"></path><path d="m2 2 20 20"></path></svg>
+                      </button>
+                    </div>
+
+                    <label for="passwordNuevaConfirmar" style="display:block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Confirmar contraseña nueva</label>
+                    <div class="password-field" style="margin-bottom: 14px;">
+                      <input type="password" id="passwordNuevaConfirmar" style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 6px;">
+                      <button type="button" id="togglePasswordNuevaConfirmar" class="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false" data-target="passwordNuevaConfirmar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye-off" aria-hidden="true" style="display:none;"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"></path><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"></path><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"></path><path d="m2 2 20 20"></path></svg>
+                      </button>
+                    </div>
+
+                    <div class="form-note" id="passwordInfoMsg" style="display:none; margin-bottom: 12px;"></div>
+                    <div class="modal-actions" style="justify-content: flex-start;">
+                      <button type="submit" class="btn">Cambiar Contraseña</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </details>
+          
+          <details class="perfil-acordeon">
+            <summary>Suscripción</summary>
+            <div class="perfil-acordeon-contenido" id="suscripcionCard">
+              <p class="section-sub" style="margin-bottom: 14px;">Información sobre tu plan de suscripción.</p>
+              <div class="mensajeria-canal" style="margin-bottom: 0; justify-content: center; display: flex; flex-direction: column; align-items: center;">
+                <div id="suscripcionContenido"><div class="loading">Cargando...</div></div>
+                <div class="form-note" id="suscripcionMsg" style="display:none; margin-top: 12px;"></div>
+              </div>
+            </div>
+          </details>
+
+          <details class="perfil-acordeon" id="mensajeriaCard">
+            <summary>Mensajería</summary>
+            <div class="perfil-acordeon-contenido">
+              <p class="section-sub" style="margin-bottom: 14px;">¿Por dónde quieres recibir tus alertas? — depende de tu plan.</p>
+
+              <div class="mensajeria-canal">
+                <div class="mensajeria-canal-head">
+                  <img src="/assets/icons/email.png" class="icon-desc-canal">&nbsp;</img><span>Email</span>
+                </div>
+
+                <span class="tag" style="background: var(--down-soft); color: var(--down);">Siempre activo</span>
+                <p class="form-note" style="margin: 4px 0 0 0;">Todas las cuentas reciben sus alertas por correo — no se puede desactivar.</p>
+              </div>
+
+
+              <div class="mensajeria-canal">
+                <div class="mensajeria-canal-head">
+                  <img src="/assets/icons/telegram.png" class="icon-desc-canal">&nbsp;</img><span>Telegram</span>
+                </div>
+                <div id="telegramContenido" style="margin-top: 8px;"><div class="loading">Cargando...</div></div>
+              </div>
+
+              <div class="mensajeria-canal" id="whatsappSeccion" style="display:none;">
+                <div class="mensajeria-canal-head">
+                  <img src="/assets/icons/whatsapp.png" class="icon-desc-canal">&nbsp;</img><span>WhatsApp</span>
+                </div>
+                <div id="whatsappContenido" style="margin-top: 8px;"><div class="loading">Cargando...</div></div>
+              </div>
+            </div>
+          </details>
+
+          
+        </div>
+      </section>
+    </div>
+
+    <!-- Sección: Ayuda -->
+    <div class="tab-content" id="secAyuda">
+      <section>
+        <div class="section-head">
+          <div class="icon"><img src="/assets/icons/interrogatorio.svg" class="icon-desc"></img></div>
+          <h2>Ayuda</h2>
+        </div>
+        <p class="section-sub" style="margin-bottom: 20px;">Guía rápida de MercadoAlerta y un formulario para escribirnos directo si algo no te queda claro.</p>
+
+        <div class="card" style="padding: 24px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div>
+            <h3 style="font-size: 15px; margin-bottom: 4px;">¿Quieres repasar cómo funciona MercadoAlerta?</h3>
+            <p class="section-sub" style="margin: 0;">Recorre de nuevo el tour guiado que viste al crear tu cuenta.</p>
+          </div>
+          <button type="button" class="btn btn-secondary" id="verTourDeNuevoBtn">Volver a ver el tour</button>
+        </div>
+
+        <div class="card" style="padding: 24px; margin-bottom: 20px;">
+          <h3 style="font-size: 15px; margin-bottom: 14px;">Guía rápida</h3>
+
+          <details class="filter-toggle ayuda-item">
+            <summary>¿Qué es MercadoAlerta y cómo funciona?</summary>
+            <p>MercadoAlerta revisa Mercado Público por ti, día y noche, y te avisa por correo (y Telegram o WhatsApp, si lo configuras) apenas se publica una Licitación o Compra Ágil que calza con lo que configuraste en tus <strong>Alertas</strong>. No hace falta que entres a revisar el portal a mano todos los días.</p>
+          </details>
+
+          <details class="filter-toggle ayuda-item">
+            <summary>¿Cómo creo mi primera alerta?</summary>
+            <p>Ve a <strong>Alertas → + Nueva Alerta</strong>. Lo único obligatorio es elegir un <strong>Rubro o Producto</strong> — todo lo demás (tipo de proceso, tramo de monto, ubicación, organismo comprador) es opcional y está colapsado bajo "Opciones avanzadas", por si quieres afinar más la búsqueda.</p>
+          </details>
+
+          <details class="filter-toggle ayuda-item">
+            <summary>¿Cuál es la diferencia entre Alertas y Búsquedas?</summary>
+            <p>Una <strong>Alerta</strong> queda guardada y te avisa automáticamente cada vez que se publica algo nuevo que calza — no tienes que hacer nada más. Una <strong>Búsqueda</strong> es puntual: consulta en el momento contra Mercado Público (con los mismos filtros que uses) y te muestra los resultados ahí mismo, sin quedar monitoreando nada hacia adelante.</p>
+          </details>
+
+          <details class="filter-toggle ayuda-item">
+            <summary>¿Qué son Recordatorios, Seguimiento y Portafolio (Oportunidades)?</summary>
+            <p><strong>Recordatorios de cierre</strong> te avisan con anticipación (24, 72 horas, etc., tú eliges) antes de que cierre una Licitación o Compra Ágil que te interesa. <br><strong>Seguimiento de estado</strong> te avisa cada vez que una Licitación cambia de estado (por ejemplo, pasa a "Adjudicada"). <br><strong>Portafolio</strong> es tu mini-CRM personal — un tablero para ir moviendo cada oportunidad por las etapas de tu propio proceso de venta (por evaluar, preparando oferta, ganada, perdida, etc.), con notas propias en cada una.</p>
+          </details>
+
+          <details class="filter-toggle ayuda-item">
+            <summary>¿Qué es Análisis de Precios?</summary>
+            <p>Buscas un producto o rubro y ves el historial de precios en los que se ha adjudicado antes — útil para calibrar a qué precio postular en un llamado nuevo, antes de armar tu oferta económica. Tiene 4 vistas: <strong>Precios</strong> (el historial en sí), <strong>Proveedores</strong> (quiénes se lo han adjudicado antes), <strong>Organismos</strong> (qué instituciones lo compran) y <strong>Razones de rechazo</strong> (por qué se han rechazado ofertas de ese producto/rubro en el pasado, para no repetir el mismo error).</p>
+          </details>
+
+          <details class="filter-toggle ayuda-item">
+            <summary>¿Cómo funciona el Análisis de Procesos con IA?</summary>
+            <p>Ingresas el código de una Licitación o Compra Ágil, subes el PDF o Word de las bases (o marcas "No tengo o no existen archivos" para que se analice solo con la información pública disponible), y la IA te devuelve un resumen en lenguaje simple más un checklist de los documentos que exige. Es un apoyo para entender más rápido qué se pide — no reemplaza tu propio criterio ni redacta tu oferta.</p>
+            <p>Cada plan tiene una cuota mensual (no es mes calendario: se cuenta desde tu primer análisis de cada ciclo) — la ves apenas entras a la sección, sin necesidad de intentar un análisis primero.</p>
+          </details>
+
+          <details class="filter-toggle ayuda-item">
+            <summary>¿Cómo cambio de plan o cancelo mi suscripción?</summary>
+            <p>Desde <strong>Configuración → Suscripción</strong> puedes ver tu plan actual, tu historial de pagos, y cancelar cuando quieras. Al cancelar, no pierdes el acceso al instante — lo mantienes hasta que termine el período que ya pagaste, y te avisamos por correo un par de días antes de que se corte de verdad.</p>
+          </details>
+
+          <details class="filter-toggle ayuda-item">
+            <summary>¿Por qué no puedo editar mi RUT o mi email?</summary>
+            <p>El RUT de la empresa queda fijo porque ya se validó contra Mercado Público al momento de registrarte. El email tampoco es editable debido a que es la fuente oficial de comunicación que has establecido con nosotros — si necesitas cambiarlo, escríbenos con el formulario de aquí abajo.</p>
+          </details>
+
+          <details class="filter-toggle ayuda-item">
+            <summary>¿Qué pasa cuando termina mi período de prueba?</summary>
+            <p>Tu prueba dura 14 días. Te avisamos por correo 2 días antes de que termine, y de nuevo el mismo día que vence. Al vencer, tus alertas dejan de monitorear hasta que elijas un plan — pero toda tu configuración (alertas, búsquedas guardadas, recordatorios, portafolio) queda guardada tal cual la dejaste, sin perder nada.</p>
+          </details>
+        </div>
+
+        <div class="card" style="padding: 24px;">
+          <h3 style="font-size: 15px; margin-bottom: 6px;">¿No encontraste lo que buscabas?</h3>
+          <p class="section-sub" style="margin-bottom: 16px;">Escríbenos y te respondemos directo a tu correo.</p>
+
+          <form id="ayudaContactoForm">
+            <div class="field" style="margin-bottom: 14px;">
+              <label for="ayudaAsunto">Asunto</label>
+              <input type="text" id="ayudaAsunto" placeholder="Ej: Dudas sobre mi plan" maxlength="255" required>
+            </div>
+            <div class="field" style="margin-bottom: 14px;">
+              <label for="ayudaMensaje">Mensaje</label>
+              <textarea id="ayudaMensaje" rows="5" placeholder="Cuéntanos en detalle qué necesitas..." required style="width:100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 6px; font-family: var(--font-body); font-size: 16px; resize: vertical;"></textarea>
+            </div>
+            <div class="error-banner" id="errorAyudaContacto" style="display:none;"></div>
+            <div class="form-note" id="ayudaContactoMsg" style="display:none;"></div>
+            <div class="modal-actions" style="justify-content: flex-start;">
+              <button type="submit" class="btn" id="ayudaContactoBtn">Enviar mensaje</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="newAlertModal">
+  <div class="modal modal-wide">
+    <h3>Nueva Alerta</h3>
+    <form id="newAlertForm">
+      <div class="form-grid">
+
+        <!-- 1. Producto o Rubro (único campo obligatorio) -->
+        <div class="field" style="grid-column: 1 / -1; position: relative; border: 1px solid var(--border); padding: 10px;">
+          
+          <label><strong>Rubro o Producto *</strong></label>
+          <small>Elige un producto o rubro que deseas seguir.</small>
+          </br>
+
+          <div class="categoria-modo-tabs" id="categoriaModoTabs">
+            <button type="button" class="categoria-modo-tab active" data-modo="producto">Buscar producto</button>
+            <button type="button" class="categoria-modo-tab" data-modo="rubro">Explorar por rubro</button>
+          </div>
+
+          <div id="categoriaModoProducto">
+            <input type="text" id="categoriaBuscar" placeholder="Busca por nombre o código (ej. vehículos, 72131500)" autocomplete="off">
+            <div id="categoriaResultados" class="categoria-resultados"></div>
+          </div>
+
+          <div id="categoriaModoRubro" style="display:none;">
+            <button type="button" id="rubroArbolBtn" class="region-dropdown-btn">Elegir un rubro...</button>
+            <div id="rubroArbolPanel" class="rubro-arbol-panel"></div>
+          </div>
+
+          <div id="categoriasChips" class="categoria-chips"></div>
+          <p class="form-note" id="categoriasLimiteMsg" style="margin-top: 6px;"></p>
+        </div>
+
+        <!-- 2. Licitaciones / Compras Ágiles -->
+        <div class="field" style="grid-column: 1 / -1; border: 1px solid var(--border); padding: 10px;">
+          <label><strong>Tipo de proceso a seguir</strong></label>
+
+          <div class="tipo-proceso-row">
+            <label class="checkbox-row" style="margin:0;"><input type="checkbox" id="tipoProcesoLicitacion" checked> Licitaciones</label>
+            <label class="checkbox-row" style="margin:0;"><input type="checkbox" id="tipoProcesoCompraAgil" checked> Compras Ágiles</label>
+          </div>
+          <select id="tipoProcesoSelect" class="tipo-proceso-select">
+            <option value="ambas" selected>Licitaciones y Compras Ágiles</option>
+            <option value="licitacion">Solo Licitaciones</option>
+            <option value="compra_agil">Solo Compras Ágiles</option>
+          </select>
+        </div>
+
+        <details class="filter-toggle" style="grid-column: 1 / -1;">
+          <summary>Opciones avanzadas (opcional)</summary>
+
+          <!-- 3. Tipo de Licitación (tramo UTM) — solo visible si "Licitaciones" está marcado -->
+          <div class="field" id="tramoField" style="position: relative; border: 1px solid var(--border); padding: 10px; margin-top: 12px;">
+            <label for="tramoDropdownBtn"><strong>Tipo de Licitación (tramo UTM)</strong></label>
+            <small>Es el criterio de monto para Licitaciones (cada tramo ya define un rango de monto).</small>
+            </br>
+
+            <button type="button" id="tramoDropdownBtn" class="region-dropdown-btn">Todos los tramos</button>
+            <div id="tramoDropdownPanel" class="region-dropdown-panel"></div>
+          </div>
+
+          <!-- 4. Monto mínimo / máximo — solo visible si "Compras Ágiles" está marcado -->
+          <div class="field" id="montoField" style="position: relative; border: 1px solid var(--border); padding: 10px; margin-top: 12px;">
+            <div id="title-field">
+              <label><strong>Tramo de monto para Compras Ágiles</strong></label>
+              <small>Define un tramo de monto para Compras Ágiles (máximo 100 UTM).</small>
+            </div>
+
+            <div class="field" id="montoMinimoField" >
+              <label for="montoMinimo">Monto mínimo (CLP)</label>
+              <input type="text" inputmode="numeric" id="montoMinimo" placeholder="$1">
+            </div>
+            <div class="field" id="montoMaximoField">
+              <label for="montoMaximo">Monto máximo (CLP)</label>
+              <input type="text" inputmode="numeric" id="montoMaximo" placeholder="$7.164.900">
+            </div>
+          </div>
+
+          <!-- 5. Regiones -->
+          <div class="field" id="regionField" style="position: relative; border: 1px solid var(--border); padding: 10px; margin-top: 12px;">
+            <label for="regionDropdownBtn"><strong>Ubicación</strong></label>
+            <small>Filtra por la región del organismo comprador (no de tu empresa). Si no marcas ninguna, se monitorean todas las regiones del país.</small>
+            <br>
+            <button type="button" id="regionDropdownBtn" class="region-dropdown-btn">Todas las regiones</button>
+            <div id="regionDropdownPanel" class="region-dropdown-panel"></div>
+          </div>
+
+          <!-- 6. Organismo comprador -->
+          <div class="field" id="organismoField" style="position: relative; border: 1px solid var(--border); padding: 10px; margin-top: 12px;">
+            <label for="organismoBuscar"><strong>Organismo comprador</strong> </label>
+            <small>Puedes elegir varias instituciones compradoras.</small>
+            <br>
+            <input type="text" id="organismoBuscar" placeholder="Busca por nombre (ej. Municipalidad de...)" autocomplete="off">
+            <div id="organismoResultados" class="categoria-resultados"></div>
+            <div id="organismosChips" class="categoria-chips"></div>
+          </div>
+        </details>
+
+      </div>
+      <div class="error-banner" id="errorBannerModal"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cerrarNuevaAlertaBtn">Cancelar</button>
+        <button type="submit" class="btn" id="createBtn">+ Crear Alerta</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="newBusquedaModal">
+  <div class="modal modal-wide">
+    <h3>Nueva Búsqueda</h3>
+    <form id="newBusquedaForm">
+      <div class="form-grid">
+
+        <!-- 1. Nombre -->
+        <div class="field" style="grid-column: 1 / -1;">
+          <label for="busquedaNombre"><strong>Nombre de la búsqueda *</strong></label>
+          <input type="text" id="busquedaNombre" placeholder="Ej. Búsqueda de licitaciones en HDS" maxlength="150">
+        </div>
+
+        <!-- 2. Qué buscar: Licitaciones O Compra Ágil -->
+        <div class="field" style="grid-column: 1 / -1; border: 1px solid var(--border); padding: 10px;">
+          <label><strong>¿Qué quieres buscar? *</strong></label>
+          <div class="tipo-proceso-row">
+            <label class="checkbox-row" style="margin:0;"><input type="radio" name="busquedaTipo" id="busquedaTipoLicitacion" value="licitacion" checked> Licitaciones</label>
+            <label class="checkbox-row" style="margin:0;"><input type="radio" name="busquedaTipo" id="busquedaTipoCompraAgil" value="compra_agil"> Compras Ágiles</label>
+          </div>
+          <select id="busquedaTipoSelect" class="tipo-proceso-select">
+            <option value="licitacion" selected>Licitaciones</option>
+            <option value="compra_agil">Compras Ágiles</option>
+          </select>
+        </div>
+
+        <!-- 3. Modo de búsqueda — Licitaciones (4 combinaciones documentadas
+             por la API, mutuamente excluyentes) o Compra Ágil (solo 2: por
+             código, o por texto/región/estado — que sí se combinan libremente). -->
+        <div class="field" id="busquedaModoField" style="grid-column: 1 / -1; border: 1px solid var(--border); padding: 10px;">
+          <label><strong>¿Cómo quieres buscarla? *</strong></label>
+          <div class="tipo-proceso-row tipo-proceso-row-4col">
+            <label class="checkbox-row" style="margin:0;"><input type="radio" name="busquedaModo" id="busquedaModoCodigo" value="codigo" checked> Por código</label>
+            <label class="checkbox-row" style="margin:0;"><input type="radio" name="busquedaModo" id="busquedaModoEstadoFecha" value="estado_fecha"> Por estado</label>
+            <label class="checkbox-row" style="margin:0;"><input type="radio" name="busquedaModo" id="busquedaModoProveedor" value="proveedor"> Por proveedor (RUT)</label>
+            <label class="checkbox-row" style="margin:0;"><input type="radio" name="busquedaModo" id="busquedaModoOrganismo" value="organismo"> Por organismo</label>
+          </div>
+          <select id="busquedaModoSelect" class="tipo-proceso-select">
+            <option value="codigo" selected>Por código</option>
+            <option value="estado_fecha">Por estado</option>
+            <option value="proveedor">Por proveedor (RUT)</option>
+            <option value="organismo">Por organismo</option>
+          </select>
+          <!-- Aviso de qué NO se puede filtrar, según el tipo/modo elegido -->
+          <div class="field" style="grid-column: 1 / -1;">
+            <small id="busquedaAvisoLimitacion" style="color: var(--text-muted);"></small>
+          </div>
+        </div>
+
+        <!-- 3' Modo de búsqueda — Compra Ágil (oculto por defecto, se muestra
+             cuando arriba se elige "Compras Ágiles") -->
+        <div class="field" id="busquedaModoCompraAgilField" style="grid-column: 1 / -1; border: 1px solid var(--border); padding: 10px; display: none;">
+          <label><strong>¿Cómo quieres buscarla? *</strong></label>
+          <div class="tipo-proceso-row">
+            <label class="checkbox-row" style="margin:0;"><input type="radio" name="busquedaModoCompraAgil" id="busquedaModoCACodigo" value="codigo" checked> Por código</label>
+            <label class="checkbox-row" style="margin:0;"><input type="radio" name="busquedaModoCompraAgil" id="busquedaModoCAListado" value="listado"> Por texto, región y/o estado</label>
+          </div>
+          <select id="busquedaModoCompraAgilSelect" class="tipo-proceso-select">
+            <option value="codigo" selected>Por código</option>
+            <option value="listado">Por texto, región y/o estado</option>
+          </select>
+        </div>
+
+        <!-- 3a. Modo 'codigo' — compartido entre Licitaciones y Compra Ágil
+             (mismo campo, cambia el label/placeholder según el tipo elegido). -->
+        <div class="field" id="busquedaCodigoField" style="grid-column: 1 / -1; border: 1px solid var(--border); padding: 10px;">
+          <label for="busquedaCodigoExterno" id="busquedaCodigoLabel">Código de la Licitación *</label>
+          <input type="text" id="busquedaCodigoExterno" placeholder="Ej: 1509-5-L114">
+        </div>
+
+        <!-- 3b. Modo 'estado_fecha' (Licitaciones) -->
+        <div class="field" id="busquedaEstadoField" style="grid-column: 1 / -1; display: none; border: 1px solid var(--border); padding: 10px;">
+          <label for="busquedaEstadoSelect"><strong>Estado *</strong></label>
+          <select id="busquedaEstadoSelect">
+            <option value="todos" selected>Todos</option>
+            <option value="publicada">Publicada</option>
+            <option value="cerrada">Cerrada</option>
+            <option value="desierta">Desierta</option>
+            <option value="adjudicada">Adjudicada</option>
+            <option value="revocada">Revocada</option>
+            <option value="suspendida">Suspendida</option>
+          </select>
+        </div>
+
+        <!-- 3c. Modo 'proveedor' (Licitaciones) -->
+        <div class="field" id="busquedaRutProveedorField" style="grid-column: 1 / -1; display: none; border: 1px solid var(--border); padding: 10px;">
+          <label for="busquedaRutProveedor"><strong>RUT del proveedor *</strong></label>
+          <small>Con puntos y guión, ej. 70.017.820-k.</small>
+          <input type="text" id="busquedaRutProveedor" placeholder="70.017.820-k">
+        </div>
+
+        <!-- 3d. Organismo comprador — SOLO modo 'organismo' de Licitaciones
+             (Compra Ágil ya no filtra por organismo). -->
+        <div class="field" id="busquedaOrganismoField" style="grid-column: 1 / -1; position: relative; border: 1px solid var(--border); padding: 10px; display: none;">
+          <label for="busquedaOrganismoBuscar"><strong>Organismo comprador *</strong></label>
+          <small id="busquedaOrganismoSmall">Elige una institución compradora.</small>
+          <input type="text" id="busquedaOrganismoBuscar" placeholder="Busca por nombre (ej. Municipalidad de...)" autocomplete="off">
+          <div id="busquedaOrganismoResultados" class="categoria-resultados"></div>
+          <div id="busquedaOrganismosChips" class="categoria-chips"></div>
+        </div>
+
+        <!-- 3e. Fecha — modos 'estado_fecha' / 'proveedor' / 'organismo' (Licitaciones) >
+        <div class="field" id="busquedaFechaField" style="grid-column: 1 / -1; display: none; border: 1px solid var(--border); padding: 10px;">
+          <label for="busquedaFecha">Fecha</label>
+          <small>Opcional. Si no eliges una, se busca con la fecha del día en que ejecutes la búsqueda.</small>
+          <input type="date" id="busquedaFecha">
+        </div-->
+
+        <!-- 4. Texto libre — SOLO Compra Ágil, modo 'listado' -->
+        <div class="field" id="busquedaTextoLibreField" style="grid-column: 1 / -1; display: none; border: 1px solid var(--border); padding: 10px;">
+          <label for="busquedaTextoLibre">Texto libre</label>
+          <small>Opcional. Busca por palabras dentro del nombre/descripción de la Compra Ágil.</small>
+          <input type="text" id="busquedaTextoLibre" placeholder="Ej: materiales eléctricos">
+        </div>
+
+        <!-- 5. Región — SOLO Compra Ágil, modo 'listado' -->
+        <div class="field" id="busquedaRegionField" style="grid-column: 1 / -1; display: none; border: 1px solid var(--border); padding: 10px;">
+          <label for="busquedaRegionSelect">Región</label>
+          <small>Opcional.</small>
+          <select id="busquedaRegionSelect">
+            <option value="">Todas las regiones</option>
+          </select>
+        </div>
+
+        <!-- 6. Estado (1 o más) — SOLO Compra Ágil, modo 'listado' -->
+        <div class="field" id="busquedaEstadosCompraAgilField" style="grid-column: 1 / -1; display: none; border: 1px solid var(--border); padding: 10px;">
+          <label><strong>Estado *</strong></label>
+          <small>Opcional. Puedes marcar más de uno — si no marcas ninguno, se buscan todos.</small>
+          <div class="tipo-proceso-row">
+            <label class="checkbox-row" style="margin:0;"><input type="checkbox" name="busquedaEstadoCA" value="publicada"> Publicada</label>
+            <label class="checkbox-row" style="margin:0;"><input type="checkbox" name="busquedaEstadoCA" value="cerrada"> Cerrada</label>
+            <label class="checkbox-row" style="margin:0;"><input type="checkbox" name="busquedaEstadoCA" value="desierta"> Desierta</label>
+            <label class="checkbox-row" style="margin:0;"><input type="checkbox" name="busquedaEstadoCA" value="cancelada"> Cancelada</label>
+            <label class="checkbox-row" style="margin:0;"><input type="checkbox" name="busquedaEstadoCA" value="proveedor_seleccionado"> Proveedor Seleccionado</label>
+
+          </div>
+          <select id="busquedaEstadosCompraAgilSelect" class="tipo-proceso-select" multiple size="5">
+            <option value="publicada">Publicada</option>
+            <option value="cerrada">Cerrada</option>
+            <option value="desierta">Desierta</option>
+            <option value="cancelada">Cancelada</option>
+            <option value="proveedor_seleccionado">Proveedor Seleccionado</option>
+          </select>
+        </div>
+
+        <!-- 7. Nuevas en las últimas N horas — SOLO Compra Ágil, modo 'listado' -->
+        <div class="field" id="busquedaHorasRecientesField" style="grid-column: 1 / -1; display: none; border: 1px solid var(--border); padding: 10px;">
+          <label for="busquedaHorasRecientes">Últimas horas</label>
+          <small>Opcional. Se combina con los filtros de arriba si los llenaste.</small>
+          <input type="number" min="1" id="busquedaHorasRecientes" placeholder="Ej: 2">
+        </div>
+
+      </div>
+      <div class="error-banner" id="errorBannerBusquedaModal"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cerrarNuevaBusquedaBtn">Cancelar</button>
+        <button type="submit" class="btn" id="crearBusquedaBtn">+ Guardar Búsqueda</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="agregarRecordatorioModal">
+  <div class="modal modal-wide">
+    <h3>Recordatorio de cierre</h3>
+    <p class="modal-message" id="agregarRecordatorioNombre"></p>
+    <div class="field">
+      <label for="agregarRecordatorioHoras">Avisarme</label>
+      <select id="agregarRecordatorioHoras"></select>
+    </div>
+    <div class="error-banner" id="errorBannerRecordatorioModal"></div>
+    <br>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="cerrarAgregarRecordatorioBtn">Cancelar</button>
+      <button type="button" class="btn" id="confirmarAgregarRecordatorioBtn">+ Crear Recordatorio</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="buscandoModal">
+  <div class="modal" style="max-width:280px; text-align:center;">
+    <div class="spinner"></div>
+    <p class="modal-message" style="margin: 16px 0 0;">Buscando...</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="procesandoModal">
+  <div class="modal" style="max-width:280px; text-align:center;">
+    <div class="spinner"></div>
+    <p class="modal-message" id="procesandoModalMensaje" style="margin: 16px 0 0;">Procesando...</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <p class="modal-message" id="confirmModalMessage">¿Eliminar esta alerta?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="confirmModalCancel">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="confirmModalAccept">✖ Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="tutorialBienvenidaModal">
+  <div class="modal" style="max-width: 420px; text-align: center;">
+    <img src="/assets/mercadoalerta-icon.svg" alt="" style="width: 40px; height: 40px; margin-bottom: 14px;">
+    <h3 style="font-size: 17px; margin-bottom: 10px;">¡Bienvenido a MercadoAlerta!</h3>
+    <p class="modal-message" style="margin-bottom: 22px;">Te mostramos rápidamente cómo funciona cada parte del panel — toma menos de un minuto.</p>
+    <div class="modal-actions" style="justify-content: center;">
+      <button type="button" class="btn btn-ghost" id="tutorialBienvenidaSaltarBtn">Saltar</button>
+      <button type="button" class="btn" id="tutorialBienvenidaEmpezarBtn">Empezar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.3/dist/jspdf.plugin.autotable.min.js" integrity="sha384-Zj5NAMJ45tB1L13yWiQlFjFjlyyeUBZTWQKktGXeW303njR3jSLmfN16iUgF8I8n" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/inactivity-logout.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css">
+<script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
+<script src="js/tutorial.js"></script>
+
+</body>
+</html>

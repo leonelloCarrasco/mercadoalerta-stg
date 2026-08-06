@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/clean-url.js"></script>
+<title>Confirmando tu cuenta — MercadoAlerta</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12172B" id="theme-meta"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/login.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="icon" type="image/svg+xml" href="/assets/mercadoalerta-icon.svg">
+
+</head>
+<body>
+
+<div class="card">
+    <div style="text-align: center; margin-bottom: 20px;">
+    <div class="mark-forgot-pass"><div class="icon"><img src="/assets/icons/comenta-alt-check.svg" class="icon-desc"></img></div></div>
+    <div class="logo-forgot-pass">Confirmación de tu Cuenta</div>
+  </div>
+
+  <p class="sub-confirm" id="mensaje">Confirmando tu cuenta...</p>
+
+  <div class="error" id="errorMsg"></div>
+  <div class="notice" id="noticeMsg"></div>
+
+  <div id="reenviarConfirmacionBloque" style="display:none; margin-top: 16px;">
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">¿Quieres que te mandemos un link nuevo?</p>
+    <input type="email" id="reenviarConfirmacionEmail" placeholder="tu@correo.cl" style="margin-bottom: 8px;">
+    <button type="button" id="reenviarConfirmacionBtn" class="btn" style="width: 100%;">Reenviar correo de confirmación</button>
+    <div class="notice" id="reenviarConfirmacionMsg" style="display:none; margin-top: 8px;"></div>
+  </div>
+
+  <div class="footer-link" id="footerLink" style="display:none;">
+    <a href="login.html">Ir a iniciar sesión →</a>
+  </div>
+</div>
+
+<script src="js/confirmar-cuenta.js"></script>
+
+</body>
+</html>

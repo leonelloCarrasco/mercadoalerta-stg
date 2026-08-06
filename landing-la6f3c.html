@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/clean-url.js"></script>
+<title>MercadoAlerta — Nunca pierdas una Licitación</title>
+<meta name="description" content="Monitor de publicaciones en Mercado Público: monitoree Licitaciones y Compras Agiles para proveedores del Estado.">
+<meta name="keywords" content="mercado publico, licitaciones chile, compras agiles, alertas licitaciones, chilecompra, pymes, emt">
+<link rel="author" href="https://mercadoalerta.cl/">
+<meta name="author" content="MercadoAlerta">
+<meta name="creator" content="MercadoAlerta">
+<meta name="publisher" content="MercadoAlerta">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow, max-video-preview:-1, max-image-preview:large, max-snippet:-1">
+
+<link rel="canonical" href="https://mercadoalerta.cl/">
+<meta name="format-detection" content="telephone=no, address=no, email=no">
+<meta name="theme-color" content="#12172B" id="theme-meta"> 
+
+<!-- Open Graph / redes sociales -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mercadoalerta.cl">
+<meta property="og:site_name" content="MercadoAlerta">
+<meta property="og:title" content="MercadoAlerta — Nunca pierdas una Licitación">
+<meta property="og:description" content="Recibe alertas de Licitaciones y Compras Ágiles que calzan contigo. Pensado para pequeños y medianos proveedores.">
+<meta property="og:image" content="https://mercadoalerta.cl/assets/mercadoalerta-og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dashboard de MercadoAlerta para monitorear Licitaciones y Compras Ágiles en Mercado Público">
+<meta property="og:locale" content="es_CL">
+	  
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MercadoAlerta — Nunca pierdas una Licitación">
+<meta name="twitter:description" content="Recibe alertas de Licitaciones y Compras Ágiles que calzan contigo. Pensado para pequeños y medianos proveedores.">
+<meta name="twitter:image" content="https://mercadoalerta.cl/assets/mercadoalerta-og-image.png">
+
+<link rel="icon" type="image/svg+xml" href="https://mercadoalerta.cl/assets/mercadoalerta-icon.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "MercadoAlerta",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "Monitoreo automático de Licitaciones y Compras Ágiles de Mercado Público, con alertas por email y Telegram.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CLP",
+    "description": "Plan Trial gratuito por 14 días"
+  },
+  "url": "https://mercadoalerta.cl/"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+  <section id="head">
+<div class="wrap">
+  <nav>
+    <div class="logo"><img src="/assets/mercadoalerta-icon.svg" class="logo-seal"/>MercadoAlerta</div>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a class="plain" href="#planes">Planes</a>
+      <a class="plain" href="#como-funciona">Cómo funciona</a>
+      <a class="nav-cta dashboard-link" target="_blank" data-path="/login.html" href="https://mercadoalerta.cl/login.html">Iniciar sesión</a>
+    </div>
+  </nav>
+</div>
+  </section>
+
+<div class="ticker-outer">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">Para quienes le venden al Estado</div>
+      <h1>Las Licitaciones y Compras Ágiles que te interesan,<br>antes de que <em>se te escapen</em>.</h1>
+      <p class="hero-sub"><strong>MercadoAlerta</strong> revisa Mercado Público por ti, día y noche, y te avisa apenas aparece algo que calza con lo que buscas — sin entrar a revisar a mano todos los días.</p>
+      <div class="hero-ctas">
+        <a href="#planes" class="btn btn-primary">Ver planes</a>
+        <a href="https://mercadoalerta.cl/register.html?plan=trial" class="btn btn-ghost dashboard-link" data-path="/register.html?plan=trial">Empezar gratis</a>
+      </div>
+    </div>
+    <img src="/assets/mercadoalerta-dashboard-browser.png" class="hero-image" alt="Dashboard de MercadoAlerta">
+  </section>
+
+  <section class="section reveal">
+    <div class="section-head">
+      <div class="section-eyebrow">El problema</div>
+      <h2>Mercado Público publica cientos de Licitaciones y Compras Ágiles al día. Tú solo necesitas ver las tuyas.</h2>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="mark"><div class="icon"><img src="/assets/icons/calendario-exclamacion.svg" class="icon-desc"></img></div></div>
+        <p><strong>Te enteras tarde.</strong> Revisas el portal una vez a la semana y para cuando ves una Licitación que te interesa, el plazo ya está encima — y una Compra Ágil puede cerrar en solo 24 horas.</p>
+      </div>
+      <div class="problem-card">
+        <div class="mark"><div class="icon"><img src="/assets/icons/lista-de-filtros.svg" class="icon-desc"></img></div></div>
+        <p><strong>Filtrar a mano toma tiempo.</strong> El buscador de Mercado Público no está pensado para "avísame solo de esto" — tienes que revisar todo cada vez.</p>
+      </div>
+      <div class="problem-card">
+        <div class="mark"><div class="icon"><img src="/assets/icons/comenta-alt-check.svg" class="icon-desc"></img></div></div>
+        <p><strong>Se te pasan oportunidades reales.</strong> Sin un sistema de alertas, dependes de acordarte de entrar — y algunas semanas simplemente no alcanzas.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="como-funciona">
+    <div class="section-head">
+      <div class="section-eyebrow">Cómo funciona</div>
+      <h2>Configura una vez, recibe siempre.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="icon"><img src="/assets/icons/editar.svg" class="icon-desc"></img></div>
+        <div class="step-num">01 - Registra tu empresa y usuario(s)</div>
+        <p>Validamos tu RUT contra Mercado Público — un paso único. El resto de los usuarios de tu empresa no lo vuelven a hacer.</p>
+      </div>
+      <div class="step">
+        <div class="icon"><img src="/assets/icons/ajustes-deslizadores.svg" class="icon-desc"></img></div>
+        <div class="step-num">02 - Configura tus alertas</div>
+        <p>Categoría o producto, monto mínimo, región — lo que sea relevante para tu negocio. Licitaciones y Compras Ágiles, en un solo lugar.</p>
+      </div>
+      <div class="step">
+        <div class="icon"><img src="/assets/icons/sonido-de-timbre.svg" class="icon-desc"></img></div>
+        <div class="step-num">03 - Recibe el aviso</div>
+        <p>Por email o Telegram, apenas hay una coincidencia. Nada de revisar el portal a mano todos los días.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="planes">
+    <div class="section-head">
+      <div class="section-eyebrow">Planes</div>
+      <h2>Un plan para cada etapa de tu empresa.</h2>
+      <p class="section-sub">Todos los planes incluyen el mismo motor de alertas — Licitaciones y Compras Ágiles, email y Telegram, historial completo. La diferencia es cuántas alertas, búsquedas y análisis con IA puedes tener activos cada mes.</p>
+    </div>
+
+    <div class="pricing-grid" id="pricingGrid">
+      <div class="price-card"><div class="price-plan-desc">Cargando planes…</div></div>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="section-head">
+      <div class="section-eyebrow">Preguntas frecuentes</div>
+      <h2>Antes de que preguntes.</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>¿Por qué tengo que registrar mi empresa antes que mi usuario?</h3>
+        <p>Validamos el RUT de tu empresa contra Mercado Público una sola vez, para confirmar que efectivamente está habilitada como proveedor del Estado.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Qué pasa cuando termine mi período de prueba?</h3>
+        <p>Tienes 14 días gratis con el plan Trial. Pasado ese plazo, tu cuenta queda bloqueada hasta que elijas el plan Basic o Full y completes el pago — tus alertas y configuraciones quedan guardadas, no se pierden.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿El precio de lanzamiento es para siempre?</h3>
+        <p>Es el precio de lanzamiento vigente hoy. Si contratas ahora, ese precio queda congelado para tu empresa aunque el precio de lista suba más adelante — lo dejamos por escrito en los términos y condiciones.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Cómo funciona WhatsApp como canal de alertas?</h3>
+        <p>Está disponible para los planes Basic y Full. Cada plan incluye un cupo mensual de mensajes por WhatsApp (10 veces tu límite de alertas activas) — si lo superas en un mes muy intenso, tus alertas siguen llegando por Email sin ningún corte, solo se pausa el canal de WhatsApp hasta el mes siguiente. Email está incluido y activo siempre, en los tres planes.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Cómo se paga la suscripción?</h3>
+        <p>A través de MercadoPago, con cargo automático mensual a tu tarjeta. Puedes cancelar cuando quieras desde tu cuenta.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="footer-cta reveal">
+    <h2>Deja de revisar Mercado Público a mano.</h2>
+    <p class="hero-sub">Regístrate gratis con el plan Trial, o elige el plan que calce con tu equipo.</p>
+    <div class="hero-ctas">
+      <a href="https://mercadoalerta.cl/register.html?plan=trial" class="btn btn-primary dashboard-link" data-path="/register.html?plan=trial">Empezar gratis</a>
+      <a href="#planes" class="btn btn-ghost">Ver todos los planes</a>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-logo"><img src="/assets/mercadoalerta-icon.svg" class="logo-seal"/>MercadoAlerta</div>
+  <p>Herramienta independiente, sin afiliación con ChileCompra ni Mercado Público</p>
+  <p>© <span id="copyrightYear">2026</span> MercadoAlerta. Todos los derechos reservados.</p>
+</footer>
+
+<script src="js/landing-la6f3c.js"></script>
+<script src="js/copyright-year.js"></script>
+
+</body>
+</html>

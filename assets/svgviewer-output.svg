@@ -1,0 +1,71 @@
+<svg xmlns="http://w3.org" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Grupo principal centrado -->
+  <g transform="translate(0, 0)">
+    <!-- Silueta principal de la campana (Blanco) -->
+    <path d="M 256,110 
+             C 215,110 190,145 190,195 
+             C 190,265 170,290 145,315 
+             L 145,325 
+             C 145,335 155,345 165,345 
+             L 225,345 
+             C 230,320 240,295 255,275
+             L 215,275
+             C 225,255 225,230 225,195
+             C 225,165 240,145 256,145
+             C 272,145 287,165 287,195
+             C 287,205 286,215 284,225
+             L 320,185
+             C 322,180 322,175 322,170
+             C 322,135 305,110 256,110 Z" 
+          fill="#FFFFFF" />
+
+    <!-- Oreja superior de la campana (Blanco) -->
+    <path d="M 256,80 
+             C 242,80 231,91 231,105 
+             L 231,112 
+             C 239,111 247,110 256,110 
+             C 265,110 273,111 281,112 
+             L 281,105 
+             C 281,91 270,80 256,80 Z" 
+          fill="#FFFFFF" />
+
+    <!-- Base inferior derecha de la campana interrumpida por la flecha (Blanco) -->
+    <path d="M 285,345 
+             L 347,345 
+             C 357,345 367,335 367,325 
+             L 367,315 
+             C 350,298 338,282 328,262 
+             L 299,295 
+             C 292,303 285,325 285,345 Z" 
+          fill="#FFFFFF" />
+
+    <!-- Línea de tendencia de mercado / Flecha ascendente (Blanco) -->
+    <path d="M 160,310 
+             L 235,225 
+             L 280,275 
+             L 365,180 
+             L 350,165 
+             L 400,160 
+             L 395,210 
+             L 380,195 
+             L 282,305 
+             L 237,255 
+             L 175,325 Z" 
+          fill="#FFFFFF" />
+
+    <!-- Badajo central de la campana (Naranja) -->
+    <circle cx="256" cy="295" r="22" fill="#E65C00" />
+    
+    <!-- Tallo del badajo (Naranja) -->
+    <rect x="251" y="235" width="10" height="45" rx="5" fill="#E65C00" />
+
+    <!-- Arco inferior / Péndulo exterior (Naranja) -->
+    <path d="M 215,357 
+             C 215,380 233,398 256,398 
+             C 279,398 297,380 297,357 
+             L 272,357 
+             C 272,366 265,373 256,373 
+             C 247,373 240,366 240,357 Z" 
+          fill="#E65C00" />
+  </g>
+</svg>

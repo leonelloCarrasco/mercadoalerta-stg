@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/clean-url.js"></script>
+<title>MercadoAlerta — Sitio en construcción</title>
+<meta name="description" content="MercadoAlerta está preparando su lanzamiento. Vuelve pronto.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12172B" id="theme-meta"> 
+<link rel="icon" type="image/svg+xml" href="/assets/mercadoalerta-icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12172B;
+    --surface: #1B2140;
+    --border: #3A427055;
+    --text: #EDEEF5;
+    --text-muted: #8B90A8;
+    --gold: #D4A72C;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+  .wrap { max-width: 480px; }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 24px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    margin-bottom: 40px;
+  }
+  .logo-seal { width: 26px; height: 26px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 38px);
+    line-height: 1.25;
+    margin-bottom: 18px;
+  }
+  h1 em { font-style: italic; color: var(--gold); }
+  p.sub {
+    color: var(--text-muted);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="logo">
+    <img src="/assets/mercadoalerta-icon.svg" class="logo-seal" alt="">
+    MercadoAlerta
+  </div>
+
+  <div class="eyebrow">Próximamente</div>
+  <h1>Estamos preparando algo <em>para ti</em>.</h1>
+  <p class="sub">MercadoAlerta está terminando de afinar los últimos detalles antes de su lanzamiento. Vuelve pronto.</p>
+
+  <div class="badge"><span class="dot"></span>Sitio en construcción</div>
+</div>
+
+<script>
+  // Solo en desarrollo local (Live Server, etc.) redirige directo a la landing
+  // real — en producción esto nunca se dispara, así que el sitio real queda
+  // inaccesible salvo para quien conozca la URL exacta.
+  if (['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+    window.location.href = 'landing-la6f3c.html';
+  }
+</script>
+
+</body>
+</html>

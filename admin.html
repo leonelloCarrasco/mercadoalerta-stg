@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/clean-url.js"></script>
+<title>Panel Admin — MercadoAlerta</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12172B" id="theme-meta"> 
+<script>
+  // Ver el mismo script en dashboard.html — admin.html comparte
+  // dashboard.css, así que respeta la preferencia de tema aunque no tenga
+  // el selector acá (ese vive en Mi Perfil, solo en el dashboard normal).
+  (function () {
+    var tema = localStorage.getItem('tema');
+    if (tema === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/admin.css">
+<link rel="icon" type="image/svg+xml" href="/assets/mercadoalerta-icon.svg">
+
+</head>
+<body style="visibility:hidden">
+
+<div class="admin-wrap">
+  <header class="admin-header">
+    <div class="logo"><img src="/assets/mercadoalerta-icon.svg" class="logo-seal"/>MercadoAlerta <span class="admin-badge">Admin</span></div>
+    <div class="admin-header-actions">
+      <a href="dashboard.html" class="btn btn-ghost">← Volver al Dashboard</a>
+    </div>
+  </header>
+
+  <div class="error-banner" id="errorBanner">dsds</div>
+  <div class="notice" id="noticeBanner" style="display:none;"></div>
+
+  <nav class="admin-tabs" id="adminTabs">
+    <button type="button" class="admin-tab active" data-tab="usuarios">Usuarios</button>
+    <button type="button" class="admin-tab" data-tab="licitaciones">Licitaciones</button>
+    <button type="button" class="admin-tab" data-tab="compras-agiles">Compras Ágiles</button>
+  </nav>
+
+  <main class="admin-main">
+
+    <!-- ===================== USUARIOS ===================== -->
+    <section class="admin-section" id="tab-usuarios">
+      <div class="admin-section-head">
+        <h2>Usuarios Registrados</h2>
+        <button type="button" class="btn btn-ghost" id="refrescarUsuariosBtn">↻ Refrescar</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table" id="tablaUsuarios">
+          <thead>
+            <tr>
+              <th>Usuario</th><th>Email</th><th>Empresa</th><th>Plan</th>
+              <th>Estado cuenta</th><th>Pago</th><th>Admin</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="tablaUsuariosBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== LICITACIONES ===================== -->
+    <section class="admin-section" id="tab-licitaciones" style="display:none;">
+      <div class="admin-section-head">
+        <h2>Buscar licitaciones en Mercado Público</h2>
+      </div>
+
+      <form class="admin-search-form" id="formBuscarLicitaciones">
+        <div class="field">
+          <label for="licFecha">Fecha de publicación</label>
+          <input type="date" id="licFecha">
+          <small>Si la dejas vacía, se listan las licitaciones activas hoy.</small>
+        </div>
+        <div class="field">
+          <label for="licCodigo">Código exacto</label>
+          <input type="text" id="licCodigo" placeholder="ej. 1234-5-L126">
+          <small>Si buscas por código, se ignoran los demás filtros.</small>
+        </div>
+        <div class="field" style="position:relative;">
+          <label for="licProductoBuscar">Producto o rubro</label>
+          <input type="text" id="licProductoBuscar" placeholder="Busca por nombre o código" autocomplete="off">
+          <div id="licProductoResultados" class="categoria-resultados"></div>
+          <div id="licProductoSeleccionado" class="admin-chip-seleccionado" style="display:none;"></div>
+          <small>Al usar este filtro, hay que traer el detalle de cada candidato (más lento, ~3s c/u — se limita a 30 resultados).</small>
+        </div>
+        <button type="submit" class="btn" id="licBuscarBtn">Buscar</button>
+      </form>
+
+      <div class="admin-search-status" id="licStatus"></div>
+
+      <div class="admin-table-wrap" id="licResultadosWrap" style="display:none;">
+        <div class="admin-table-actions">
+          <label class="checkbox-row" style="margin:0;"><input type="checkbox" id="licSeleccionarTodos"> Seleccionar todos los nuevos</label>
+          <button type="button" class="btn" id="licImportarBtn" disabled>Importar seleccionadas (0)</button>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr><th></th><th>Código</th><th>Nombre</th><th>Cierre</th><th>En BD</th></tr>
+          </thead>
+          <tbody id="licResultadosBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== COMPRAS ÁGILES ===================== -->
+    <section class="admin-section" id="tab-compras-agiles" style="display:none;">
+      <div class="admin-section-head">
+        <h2>Buscar Compras Ágiles en Mercado Público</h2>
+      </div>
+
+      <form class="admin-search-form" id="formBuscarCompraAgil">
+        <div class="field">
+          <label for="caVentana">Ventana de días hacia atrás</label>
+          <input type="number" id="caVentana" min="1" max="30" value="1">
+          <small>La API pública de Compra Ágil no permite un día exacto, solo "cambios recientes" en una ventana.</small>
+        </div>
+        <div class="field">
+          <label for="caCodigo">Código exacto</label>
+          <input type="text" id="caCodigo" placeholder="ej. 12345">
+          <small>Si buscas por código, se ignoran los demás filtros.</small>
+        </div>
+        <div class="field" style="position:relative;">
+          <label for="caProductoBuscar">Producto o rubro</label>
+          <input type="text" id="caProductoBuscar" placeholder="Busca por nombre o código" autocomplete="off">
+          <div id="caProductoResultados" class="categoria-resultados"></div>
+          <div id="caProductoSeleccionado" class="admin-chip-seleccionado" style="display:none;"></div>
+          <small>Requiere traer el detalle de cada candidato (consume cuota diaria de la API — se limita a 30 resultados).</small>
+        </div>
+        <button type="submit" class="btn" id="caBuscarBtn">Buscar</button>
+      </form>
+
+      <div class="admin-search-status" id="caStatus"></div>
+
+      <div class="admin-table-wrap" id="caResultadosWrap" style="display:none;">
+        <div class="admin-table-actions">
+          <label class="checkbox-row" style="margin:0;"><input type="checkbox" id="caSeleccionarTodos"> Seleccionar todos los nuevos</label>
+          <button type="button" class="btn" id="caImportarBtn" disabled>Importar seleccionadas (0)</button>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr><th></th><th>Código</th><th>Nombre</th><th>Cierre</th><th>En BD</th></tr>
+          </thead>
+          <tbody id="caResultadosBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Modal de edición de usuario -->
+<div class="modal-overlay" id="editarUsuarioModal">
+  <div class="modal modal-wide">
+    <h3>Editar usuario</h3>
+    <form id="editarUsuarioForm">
+      <input type="hidden" id="eu_id">
+      <div class="form-grid">
+        <div class="field"><label for="eu_nombre">Nombre</label><input type="text" id="eu_nombre"></div>
+        <div class="field"><label for="eu_apellido">Apellido</label><input type="text" id="eu_apellido"></div>
+        <div class="field"><label for="eu_email">Email</label><input type="email" id="eu_email"></div>
+        <div class="field"><label for="eu_telefono">Teléfono</label><input type="text" id="eu_telefono"></div>
+        <div class="field">
+          <label for="eu_estado">Estado de la cuenta</label>
+          <select id="eu_estado">
+            <option value="pendiente_email">pendiente_email</option>
+            <option value="pendiente_pago">pendiente_pago</option>
+            <option value="activo">activo</option>
+          </select>
+        </div>
+        <div class="field"><label for="eu_rutEmpresa">RUT empresa</label><input type="text" id="eu_rutEmpresa"></div>
+        <div class="field"><label for="eu_nombreEmpresa">Nombre empresa</label><input type="text" id="eu_nombreEmpresa"></div>
+        <div class="field">
+          <label for="eu_plan">Plan</label>
+          <select id="eu_plan">
+            <option value="trial">trial</option>
+            <option value="basico">basico</option>
+            <option value="full">full</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="eu_estadoPago">Estado de pago</label>
+          <select id="eu_estadoPago">
+            <option value="activo">activo</option>
+            <option value="pendiente">pendiente</option>
+          </select>
+        </div>
+        <div class="field"><label for="eu_fechaExpiracionTrial">Expiración trial</label><input type="date" id="eu_fechaExpiracionTrial"></div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+          <label for="eu_passwordNueva">Restablecer contraseña (opcional)</label>
+          <input type="password" id="eu_passwordNueva" placeholder="Dejar vacío para no cambiarla" minlength="8">
+        </div>
+      </div>
+      <div class="error-banner" id="errorBannerEditarUsuario"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelarEditarUsuarioBtn">Cancelar</button>
+        <button type="submit" class="btn">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de confirmación (para guardar edición de usuario) -->
+<div class="modal-overlay" id="confirmarModal">
+  <div class="modal">
+    <h3>¿Confirmar cambios?</h3>
+    <p class="sub" id="confirmarModalTexto">Esto va a actualizar los datos del usuario de inmediato.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="confirmarModalCancelar">Cancelar</button>
+      <button type="button" class="btn" id="confirmarModalAceptar">Sí, aplicar cambios</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+<script src="js/inactivity-logout.js"></script>
+
+</body>
+</html>

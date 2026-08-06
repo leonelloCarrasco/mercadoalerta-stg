@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/clean-url.js"></script>
+<title>Pago recibido — MercadoAlerta</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12172B" id="theme-meta"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/login.css">
+<link rel="icon" type="image/svg+xml" href="/assets/mercadoalerta-icon.svg">
+
+</head>
+<body>
+
+<div class="card">
+  <div class="logo"><img src="/assets/mercadoalerta-icon.svg" class="logo-seal"/>MercadoAlerta</div>
+  <p class="sub" id="pagoTitulo">¡Listo! Recibimos tu pago.</p>
+
+  <div id="pagoDetalle" style="display:none; text-align:left; background: var(--surface-2, #1B2140); border-radius: 10px; padding: 16px 20px; margin: -8px 0 24px 0; font-size: 14px; line-height: 1.9;">
+    <div><strong>Plan:</strong> <span id="pagoDetallePlan"></span></div>
+    <div><strong>Monto:</strong> <span id="pagoDetalleMonto"></span></div>
+    <div id="pagoDetalleTarjetaFila" style="display:none;"><strong>Forma de pago:</strong> <span id="pagoDetalleTarjeta"></span></div>
+  </div>
+
+  <p class="sub" id="pagoSubtexto" style="margin-top: -8px; font-size: 13px;">
+    Puede tomar unos segundos en activarse mientras confirmamos el pago con MercadoPago.
+  </p>
+
+  <div class="footer-link">
+    <a href="login.html" id="pagoVolverLogin">Iniciar sesión</a>
+  </div>
+</div>
+
+<script>
+  // NOTA: el back_url de MercadoPago llega acá independiente del resultado real
+  // del pago (autorizado, rechazado, pendiente) — la activación real de la
+  // cuenta ocurre vía el webhook (ver POST /api/pagos/webhook en el backend),
+  // no se debe confiar en la sola llegada a esta página.
+  //
+  // Esta página se usa en DOS flujos distintos:
+  //  1. Registro nuevo (paga antes de haber iniciado sesión nunca) — acá NO
+  //     hay token en localStorage porque nunca se creó uno, así que se
+  //     muestra el mensaje genérico de siempre y se redirige a login.html a
+  //     los pocos segundos.
+  //  2. Upgrade desde trial vencido (YA estaba logueado antes de ir a pagar)
+  //     — acá SÍ se puede pedir el detalle real (plan/monto/tarjeta) vía
+  //     GET /api/pagos/mi-suscripcion y mostrarlo en vez del mensaje
+  //     genérico. Antes esto dependía de que MercadoPago redirigiera de
+  //     vuelta a la MISMA pestaña (sessionStorage no se comparte entre
+  //     pestañas); con localStorage el token persiste sin importar en qué
+  //     pestaña/ventana termine el redirect de MercadoPago, así que este
+  //     flujo queda más robusto que antes, no menos.
+  const API_BASE = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? 'http://localhost:3000'
+    // Staging: cualquier hostname que contenga "staging" (ej. el nombre
+    // que le pongas al Static Site de Render) apunta al backend de
+    // staging, nunca al de producción — así no hace falta acordarse de
+    // configurar esto a mano en cada deploy nuevo.
+    : window.location.hostname.includes('staging')
+    ? 'https://mercadoalertabackend-1.onrender.com'
+    : 'https://api.mercadoalerta.cl';
+
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    // Flujo 1: registro nuevo, sin sesión — mensaje genérico + redirect automático.
+    setTimeout(() => { window.location.href = 'login.html'; }, 3000);
+  } else {
+    // Flujo 2: ya logueado — intenta traer el detalle real. Si por lo que sea
+    // el pago todavía no se confirmó del lado de MercadoPago (el webhook
+    // puede tardar unos segundos más que el redirect), no se rompe la
+    // página — simplemente se deja el mensaje genérico.
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/pagos/mi-suscripcion`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (!res.ok) return;
+
+        if (data.estadoPago === 'activo') {
+          document.getElementById('pagoTitulo').textContent = '✅ Tu suscripción está activa';
+          document.getElementById('pagoSubtexto').textContent = 'Ya puedes volver a usar MercadoAlerta sin interrupciones.';
+
+          document.getElementById('pagoDetallePlan').textContent = data.plan === 'full' ? 'Full' : 'Básico';
+          document.getElementById('pagoDetalleMonto').textContent = data.monto
+            ? `$${Number(data.monto).toLocaleString('es-CL')} / mes`
+            : 'No especificado';
+
+          if (data.tarjeta?.ultimosDigitos) {
+            document.getElementById('pagoDetalleTarjeta').textContent =
+              `Tarjeta terminada en ${data.tarjeta.ultimosDigitos}${data.tarjeta.marca ? ` (${data.tarjeta.marca})` : ''}`;
+            document.getElementById('pagoDetalleTarjetaFila').style.display = 'block';
+          }
+
+          document.getElementById('pagoDetalle').style.display = 'block';
+        }
+      } catch {
+        // Sin conexión o error de red — se deja el mensaje genérico, no es grave.
+      }
+    })();
+  }
+</script>
+
+</body>
+</html>

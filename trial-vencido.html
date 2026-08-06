@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/clean-url.js"></script>
+<title>Tu prueba terminó — MercadoAlerta</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12172B" id="theme-meta"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/login.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="icon" type="image/svg+xml" href="/assets/mercadoalerta-icon.svg">
+</head>
+<body>
+
+<div class="card" id="trialVencidoCard">
+  <div class="logo"><img src="/assets/mercadoalerta-icon.svg" class="logo-seal"/>MercadoAlerta</div>
+  <p class="sub" id="trialVencidoTitulo">Tu período de prueba de 14 días terminó.</p>
+  <p class="sub" id="trialVencidoTexto" style="margin-top: -20px; font-size: 13px;">
+    Elige un plan para seguir recibiendo alertas. Todo lo que configuraste durante la
+    prueba — alertas, búsquedas guardadas, recordatorios, pipeline — sigue guardado
+    tal cual lo dejaste; apenas actives un plan, vuelves a tener acceso a todo, sin perder nada.
+  </p>
+
+  <div id="errorTrialVencido" class="error" style="display:none; margin-bottom: 16px;"></div>
+
+  <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+    <button type="button" class="btn btn-ghost" id="btnElegirBasico" style="width: 100%;">Elegir Plan Básico</button>
+    <button type="button" class="btn btn-primary" id="btnElegirFull" style="width: 100%;">Elegir Plan Full</button>
+  </div>
+
+  <div class="footer-link">
+    <a href="#" id="cerrarSesionTrialVencido">← Volver</a>
+  </div>
+</div>
+
+<script src="js/trial-vencido.js"></script>
+</body>
+</html>

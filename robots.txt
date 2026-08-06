@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /$
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /forgot-password.html
+Disallow: /reset-password.html
+Disallow: /confirmar-cuenta.html
+Disallow: /pago-confirmado.html
+Disallow: /admin.html
+Disallow: /dashboard.html
+Disallow: /simular-pago.html
+Disallow: /landing-la6f3c.html
+
+Sitemap: https://mercadoalerta.cl/sitemap.xml
