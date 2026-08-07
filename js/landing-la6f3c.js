@@ -4,15 +4,7 @@ const DASHBOARD_BASE = ['localhost', '127.0.0.1'].includes(window.location.hostn
   : 'https://mercadoalerta.cl';
 
 // Mismo patrón que dashboard.js — el backend vive en un subdominio propio en producción.
-const API_BASE = ['localhost', '127.0.0.1'].includes(window.location.hostname)
-  ? 'http://localhost:3000'
-  // Staging: cualquier hostname que contenga "staging" (ej. el nombre que
-  // le pongas al Static Site de Render) apunta al backend de staging,
-  // nunca al de producción — así no hace falta acordarse de configurar
-  // esto a mano en cada deploy nuevo.
-  : window.location.hostname.includes('staging')
-  ? 'https://mercadoalertabackend-1.onrender.com'
-  : 'https://api.mercadoalerta.cl';
+const API_BASE = 'https://mercadoalertabackend-1.onrender.com';
 
 document.querySelectorAll('.dashboard-link').forEach(a => {
   a.href = DASHBOARD_BASE + a.dataset.path;
